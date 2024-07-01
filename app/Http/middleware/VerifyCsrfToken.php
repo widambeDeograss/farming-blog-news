@@ -10,6 +10,6 @@ class VerifyCsrfToken extends Middleware
     protected $addHttpCookie = true;
 
    protected $except = [
-    'http://localhost:8000/social-media',
+     '/posts/*'
 ];
 }

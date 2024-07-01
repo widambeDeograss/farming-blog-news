@@ -27,13 +27,15 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|json',
+            'category_id' => 'required|int',
             'author' => 'string',
             'tags' => 'array',
             'tags.*' => 'exists:tags,id',
+
         ]);
 
 
-        $post = Post::create($request->only('title', 'path', 'image', 'content', 'author', 'views', 'type'));
+        $post = Post::create($request->only('title', 'path', 'image', 'category_id','content', 'author', 'views', 'type'));
         $post->tags()->sync($request->tags);
 
         $subscribers = Subscription::all();

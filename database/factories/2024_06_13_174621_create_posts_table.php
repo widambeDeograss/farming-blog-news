@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->string('path')->nullable();
-            $table->longText('image')->nullable(); 
+            $table->string('image')->nullable();
             $table->json('content')->nullable();
             $table->string('author')->nullable();
-            $table->unsignedBigInteger('category_id');
+            $table->integer('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->integer('views')->default(0);
             $table->string('type');

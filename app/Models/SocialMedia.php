@@ -13,6 +13,7 @@ class SocialMedia extends Model
         'title',
         'description',
         'url',
-        'platform'
+        'platform',
+        'image'
     ];
 }

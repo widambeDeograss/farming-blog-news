@@ -15,9 +15,9 @@ class Post extends Model
         'image',
         'content',
         'author',
-        'author_id',
         'views',
-        'type'
+        'type',
+        'category_id'
     ];
 
     public function tags()

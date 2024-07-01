@@ -25,9 +25,10 @@ class SocialMediaController extends Controller
             'description' => 'nullable|string',
             'url' => 'required|url',
             'platform' => 'required|in:instagram,twitter,other',
+            'image' => 'required|string',
         ]);
 
-        $socialMedia = SocialMedia::create($request->only('title', 'description', 'url', 'platform'));
+        $socialMedia = SocialMedia::create($request->only('title', 'description', 'url', 'platform', 'image'));
 
         return response()->json($socialMedia, 201);
     }
@@ -50,10 +51,11 @@ class SocialMediaController extends Controller
             'description' => 'nullable|string',
             'url' => 'sometimes|required|url',
             'platform' => 'sometimes|required|in:instagram,twitter,other',
+            'image' => 'required|string',
         ]);
 
         $socialMedia = SocialMedia::findOrFail($id);
-        $socialMedia->update($request->only('title', 'description', 'url', 'platform'));
+        $socialMedia->update($request->only('title', 'description', 'url', 'platform', 'image'));
 
         return response()->json($socialMedia, 200);
     }
