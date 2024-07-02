@@ -3,64 +3,59 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Post;
-use App\Models\Subscription;
-use App\Mail\NewPostNotification;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-
 
 class NewPostNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $post;
+    public $postUrl;
+    public $description;
+    public $imageBase64;
+
     /**
      * Create a new message instance.
      */
-  
-     public function __construct($post)
-     {
-         $this->post = $post;
-     }
- 
-     public function build()
-     {
-         return $this->subject('New Blog Post Published')
-                     ->view('emails.newPostNotification')
-                     ->with('post', $this->post);
-     }
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
+    public function __construct(Post $post, $postUrl)
     {
-        return new Envelope(
-            subject: 'New Post Notification',
-        );
+        $this->post = $post;
+        $this->postUrl = $postUrl;
+        $this->description = $this->generateDescription($post->title);
+        $this->imageBase64 = "https://img.freepik.com/free-photo/african-man-harvesting-vegetables_23-2151441263.jpg?t=st=1719926670~exp=1719930270~hmac=28ee4ce2c923a01c25355c4ed5011d180ba18000b1b16b79b3a989cb6a32cee8&w=996";
     }
 
     /**
-     * Get the message content definition.
+     * Build the message.
      */
-    public function content(): Content
+    public function build()
     {
-        return new Content(
-            view: 'view.name',
-        );
+        return $this->subject('Mol Agribussiness new Blog Post Published')
+                    ->view('emails.newPostNotification')
+                    ->with([
+                        'post' => $this->post,
+                        'postUrl' => $this->postUrl,
+                        'description' => $this->description,
+                        'imageBase64' => $this->imageBase64,
+                    ]);
     }
 
     /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * Generate a description based on the title.
      */
-    public function attachments(): array
+    protected function generateDescription($title)
     {
-        return [];
+        return "Check out our new blog post titled: $title";
+    }
+
+    /**
+     * Get the base64 representation of the post image.
+     */
+    protected function getImageBase64($imagePath)
+    {
+        $image = file_get_contents(storage_path('app/public/' . $imagePath));
+        return base64_encode($image);
     }
 }

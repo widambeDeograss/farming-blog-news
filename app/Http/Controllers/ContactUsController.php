@@ -21,7 +21,15 @@ class ContactUsController extends Controller
 
         $contact = ContactUs::create($request->all());
 
-        Mail::to('info@molagribusinessltd.com')->send(new ContactUsMail($contact));
+        $details = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'subject' => $request->subject,
+            'message' => $request->message,
+        ];
+
+        Mail::to('info@molagribusinessltd.com')->send(new ContactUsMail($details));
 
         return response()->json(['message' => 'Your message has been sent successfully.'], 200);
     }

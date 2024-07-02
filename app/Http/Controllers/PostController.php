@@ -38,10 +38,13 @@ class PostController extends Controller
         $post = Post::create($request->only('title', 'path', 'image', 'category_id','content', 'author', 'views', 'type'));
         $post->tags()->sync($request->tags);
 
-        $subscribers = Subscription::all();
-        foreach ($subscribers as $subscriber) {
-            Mail::to($subscriber->email)->send(new NewPostNotification($post));
-        }
+       
+        $postUrl = "https://molagribusinessltd.com/news/" . $post->id;
+
+    $subscribers = Subscription::all();
+    foreach ($subscribers as $subscriber) {
+        Mail::to($subscriber->email)->send(new NewPostNotification($post, $postUrl));
+    }
 
         return response()->json($post, 201);
     }

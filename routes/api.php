@@ -8,8 +8,9 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SocialMediaController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\ContactUsController;
 
-
+Route::post('/contact-us', [ContactUsController::class, 'store']);
 Route::get('/social-media', [SocialMediaController::class, 'index']);
 Route::post('/social-media',[SocialMediaController::class, 'store']);
 Route::put('/social-media/{id}', [SocialMediaController::class, 'update']);
